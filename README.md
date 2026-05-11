@@ -1,4 +1,4 @@
-# breast-cancer-rnaseq-analysis
+# Breast-cancer-rnaseq-analysis
 RNA-seq analysis pipeline for identifying differentially expressed genes in MCF7 breast cancer cells compared to normal breast tissue.
 Complete RNA-seq analysis pipeline using FastQC, HISAT2, SAMtools, featureCounts, and DESeq2 for identifying differentially expressed genes in MCF7 breast cancer cells.
 
@@ -6,7 +6,7 @@ This repository contains a complete RNA-seq bioinformatics workflow for analyzin
 
 The workflow is designed for paired-end RNA-seq experiments comparing cancer and normal breast tissue samples.
 
-## Table of contents 
+# Table of contents 
 
 - [Introduction](#introduction)
 - [Workflow Overview](#workflow-overview)
