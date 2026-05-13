@@ -361,6 +361,7 @@ write.csv(
 head(results_table)
 
 # Get genes higher in MCF7
+
 mcf7_up <- subset(results_table, log2FoldChange > 1)
 
 write.csv(
@@ -369,6 +370,7 @@ write.csv(
   row.names = FALSE)
 
 #Get genes higher in Control
+
 normal_up <- subset(results_table, log2FoldChange < -1)
 
 write.csv(
@@ -377,6 +379,7 @@ write.csv(
   row.names = FALSE)
 
 # Get top 20 genes from control and MCF7
+
 top20_mcf7 <- head(mcf7_up[order(mcf7_up$log2FoldChange, decreasing = TRUE), ], 20)
 
 top20_normal <- head(normal_up[order(normal_up$log2FoldChange), ], 20)
