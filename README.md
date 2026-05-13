@@ -1,4 +1,4 @@
-# Breast-cancer-rnaseq-analysis
+# RNS-seq-Data-Analysis
 RNA-seq analysis pipeline for identifying differentially expressed genes in MCF7 breast cancer cells compared to normal breast tissue.
 Complete RNA-seq analysis pipeline using FastQC, HISAT2, SAMtools, featureCounts, and DESeq2 for identifying differentially expressed genes in MCF7 breast cancer cells.
 
