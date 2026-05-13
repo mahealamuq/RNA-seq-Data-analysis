@@ -410,6 +410,8 @@ genes <- getBM(
   mart = mart
 )
 
+write.csv(genes, "genes_names.csv", row.names = FALSE)
+
 
  
 
