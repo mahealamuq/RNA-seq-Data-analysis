@@ -387,7 +387,33 @@ top20_normal <- head(normal_up[order(normal_up$log2FoldChange), ], 20)
 write.csv(top20_mcf7, "Top20_MCF7_Upregulated.csv", row.names = FALSE)
 
 write.csv(top20_normal, "Top20_Normal_Upregulated.csv", row.names = FALSE)
+
+# create new env
+conda create -n biomart_env -c conda-forge -c bioconda bioconductor-biomart
+conda activate biomart_env
+R
+library(biomaRt)
+mcf7 <- read.csv("Top20_MCF7_Upregulated.csv")
+
+# Geneid look like this ENSG00000235123.1, make it without .1
+
+mcf7$Geneid_clean <- sub("\\..*", "", mcf7$Geneid)
+
+genes <- getBM(
+  attributes = c(
+    "ensembl_gene_id",
+    "hgnc_symbol",
+    "external_gene_name"
+  ),
+  filters = "ensembl_gene_id",
+  values = mcf7$Geneid_clean,
+  mart = mart
+)
+
+
  
+
+
 
 ```
 
