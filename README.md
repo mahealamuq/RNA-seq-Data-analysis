@@ -359,19 +359,33 @@ write.csv(
 )
 
 head(results_table)
-```
 
----
+# Get genes higher in MCF7
+mcf7_up <- subset(results_table, log2FoldChange > 1)
 
-**Filter Significant Genes**
+write.csv(
+  mcf7_up,
+  "MCF7_Upregulated_Genes.csv",
+  row.names = FALSE)
 
-```r
-sig <- subset(resOrdered,
-              padj < 0.05 &
-              abs(log2FoldChange) > 1)
+#Get genes higher in Control
+normal_up <- subset(results_table, log2FoldChange < -1)
 
-write.csv(as.data.frame(sig),
-          "Significant_Genes.csv")
+write.csv(
+  normal_up,
+  "Normal_Upregulated_Genes.csv",
+  row.names = FALSE)
+
+# Get top 20 genes from control and MCF7
+top20_mcf7 <- head(mcf7_up[order(mcf7_up$log2FoldChange, decreasing = TRUE), ], 20)
+
+top20_normal <- head(normal_up[order(normal_up$log2FoldChange), ], 20)
+
+write.csv(top20_mcf7, "Top20_MCF7_Upregulated.csv", row.names = FALSE)
+
+write.csv(top20_normal, "Top20_Normal_Upregulated.csv", row.names = FALSE)
+ 
+
 ```
 
 ---
