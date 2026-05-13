@@ -303,16 +303,27 @@ featureCounts \
 ```r
 library(DESeq2)
 
-counts <- read.delim("gene_counts.txt",
-                     comment.char = "#",
-                     check.names = FALSE)
+counts <- read.delim(
+  "counts/gene_counts.txt",
+  comment.char = "#",
+  sep = "\t",
+  stringsAsFactors = FALSE,
+  check.names = FALSE
+)
 
-countData <- counts[,7:ncol(counts)]
+head(counts)
+
+countData <- counts[, c(7,8)]
+
 rownames(countData) <- counts$Geneid
+
+countData <- as.matrix(countData)
+
+mode(countData) <- "integer"
 
 sampleInfo <- data.frame(
   row.names = colnames(countData),
-  condition = c("Normal","MCF7")
+  condition = factor(c("Normal", "MCF7"))
 )
 
 dds <- DESeqDataSetFromMatrix(
@@ -321,14 +332,33 @@ dds <- DESeqDataSetFromMatrix(
   design = ~ condition
 )
 
-dds <- DESeq(dds)
+dds <- estimateSizeFactors(dds)
 
-res <- results(dds)
+norm_counts <- counts(dds, normalized = TRUE)
 
-resOrdered <- res[order(res$padj), ]
+log2FC <- log2(
+  (norm_counts[,2] + 1) /
+  (norm_counts[,1] + 1)
+)
 
-write.csv(as.data.frame(resOrdered),
-          "Differential_Expression_Results.csv")
+results_table <- data.frame(
+  Geneid = rownames(norm_counts),
+  Normal = norm_counts[,1],
+  MCF7 = norm_counts[,2],
+  log2FoldChange = log2FC
+)
+
+results_table <- results_table[
+  order(abs(results_table$log2FoldChange), decreasing = TRUE),
+]
+
+write.csv(
+  results_table,
+  "Manual_Log2FC_Results.csv",
+  row.names = FALSE
+)
+
+head(results_table)
 ```
 
 ---
