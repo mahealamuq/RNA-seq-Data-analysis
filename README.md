@@ -66,6 +66,80 @@ featureCounts Quantification
      ↓
 DESeq2 Differential Expression Analysis
 ```
+# Breast Cancer RNA-seq Analysis Pipeline
+
+A complete RNA-seq analysis workflow for identifying differentially expressed genes between MCF7 breast cancer cells and normal breast tissue using HISAT2, featureCounts, DESeq2, and BioMart.
+
+---
+
+## Overview
+
+This project implements an end-to-end RNA-seq bioinformatics pipeline for breast cancer transcriptome analysis.
+
+The workflow performs:
+
+- RNA-seq data download
+- Quality assessment
+- Read trimming
+- Genome alignment
+- Gene quantification
+- Differential expression analysis
+- Gene annotation
+- Genome browser visualization
+
+The objective is to identify genes that are significantly overexpressed or underexpressed in MCF7 breast cancer cells compared with normal breast tissue.
+
+---
+
+## Biological Background
+
+Breast cancer is one of the most common cancers worldwide. Changes in gene expression contribute to cancer development, progression, metastasis, and treatment response.
+
+RNA sequencing (RNA-seq) enables transcriptome-wide measurement of gene expression levels and allows identification of:
+
+- Cancer-associated genes
+- Potential biomarkers
+- Therapeutic targets
+- Dysregulated pathways
+
+This project compares MCF7 breast cancer cells with normal breast tissue samples.
+
+---
+
+## Workflow Overview
+
+```text
+RNA-seq FASTQ Files
+          │
+          ▼
+     FastQC
+          │
+          ▼
+       fastp
+          │
+          ▼
+      HISAT2
+          │
+          ▼
+   Sorted BAM Files
+          │
+          ▼
+   featureCounts
+          │
+          ▼
+       DESeq2
+          │
+          ▼
+ Differentially
+ Expressed Genes
+          │
+          ▼
+      BioMart
+          │
+          ▼
+ Gene Symbols &
+ Functional Annotation
+```
 
 **Main Steps**
 
@@ -79,6 +153,22 @@ DESeq2 Differential Expression Analysis
 8. Generate ranked gene list
 
 ---
+## Directory Structure
+
+breast_cancer_project/
+│
+├── index/
+├── raw_data/
+├── fastqc/
+├── trimmed/
+├── bam/
+├── results/
+├── FeatureCounts/
+├── R_scripts/
+├── IGV/
+│
+├── RNA-seq_Breast_cancer.sh
+└── README.md
 
 ## Software Requirements
 
