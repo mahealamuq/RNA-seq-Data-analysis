@@ -173,6 +173,8 @@ breast_cancer_project/
 | SAMtools | BAM processing |
 | featureCounts | Gene quantification |
 | R / DESeq2 | Differential expression analysis |
+| BioMart | Gene annotation |
+| IGV | Genome visualization |
 
 ---
 
