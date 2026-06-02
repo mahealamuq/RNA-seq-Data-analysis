@@ -190,6 +190,9 @@ breast_cancer_project/
 sudo apt update
 ```
 
+**Clone The repository**
+
+
 **Install Required Tools**
 
 ```bash
