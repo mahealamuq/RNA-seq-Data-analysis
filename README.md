@@ -142,6 +142,12 @@ This project compares MCF7 breast cancer cells with normal breast tissue samples
 ---
 
 ## How to Run the Script
+Clone The repository:
+
+```bash
+git clone https://github.com/USERNAME/breast-cancer-rnaseq-analysis.git
+cd breast-cancer-rnaseq-analysis
+```
 
 Make the script executable:
 
