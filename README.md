@@ -52,19 +52,37 @@ to identify significantly overexpressed and underexpressed genes.
 **Pipeline Workflow**
 
 ```text
-FASTQ Files
-     ↓
-FastQC Quality Control
-     ↓
-Read Trimming (fastp)
-     ↓
-HISAT2 Alignment
-     ↓
-SAMtools BAM Processing
-     ↓
-featureCounts Quantification
-     ↓
-DESeq2 Differential Expression Analysis
+```text
+RNA-seq FASTQ Files
+          │
+          ▼
+     FastQC
+          │
+          ▼
+       fastp
+          │
+          ▼
+      HISAT2
+          │
+          ▼
+   Sorted BAM Files
+          │
+          ▼
+   featureCounts
+          │
+          ▼
+       DESeq2
+          │
+          ▼
+ Differentially
+ Expressed Genes
+          │
+          ▼
+      BioMart
+          │
+          ▼
+ Gene Symbols &
+ Functional Annotation
 ```
 # Breast Cancer RNA-seq Analysis Pipeline
 
@@ -105,41 +123,6 @@ RNA sequencing (RNA-seq) enables transcriptome-wide measurement of gene expressi
 This project compares MCF7 breast cancer cells with normal breast tissue samples.
 
 ---
-
-## Workflow Overview
-
-```text
-RNA-seq FASTQ Files
-          │
-          ▼
-     FastQC
-          │
-          ▼
-       fastp
-          │
-          ▼
-      HISAT2
-          │
-          ▼
-   Sorted BAM Files
-          │
-          ▼
-   featureCounts
-          │
-          ▼
-       DESeq2
-          │
-          ▼
- Differentially
- Expressed Genes
-          │
-          ▼
-      BioMart
-          │
-          ▼
- Gene Symbols &
- Functional Annotation
-```
 
 **Main Steps**
 
