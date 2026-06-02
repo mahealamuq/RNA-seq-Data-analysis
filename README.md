@@ -140,8 +140,71 @@ This project compares MCF7 breast cancer cells with normal breast tissue samples
 8. Generate ranked gene list
 
 ---
-## Directory Structure
 
+## How to Run the Script
+
+Make the script executable:
+
+```bash
+chmod +x RNA-seq_Breast_cancer.sh
+```
+
+Run the script:
+
+```bash
+./RNA-seq_Breast_cancer.sh
+```
+
+---
+
+## Explanation of Each Step
+
+### 1. System Update
+
+```bash
+sudo apt update -y
+sudo apt upgrade -y
+```
+
+This updates Ubuntu package information and upgrades installed packages.
+
+---
+
+### 2. Software Installation
+
+The script installs required tools such as:
+
+| Tool | Purpose |
+|---|---|
+| FastQC | Checks sequencing read quality |
+| fastp | Trims low-quality reads |
+| HISAT2 | Aligns RNA-seq reads to the genome |
+| SAMtools | Processes SAM/BAM files |
+| BEDTools | Genomic interval processing |
+| Subread/featureCounts | Counts reads per gene |
+| deepTools | Creates BigWig files |
+| DESeq2 | Differential expression analysis |
+| BioMart | Converts Ensembl IDs to gene symbols |
+
+---
+
+### 3. Miniconda and Conda Environment
+
+The script installs Miniconda if it is not already installed.
+
+Then it creates a Conda environment:
+
+```bash
+rnaseq_env
+```
+
+This environment contains bioinformatics packages used in the RNA-seq workflow.
+
+---
+
+### 4. Project Folder Structure
+
+The script creates this project structure:
 
 ```text
 breast_cancer_project/
@@ -154,396 +217,264 @@ breast_cancer_project/
 ├── results/
 ├── FeatureCounts/
 ├── R_scripts/
-├── IGV/
-│
-├── RNA-seq_Breast_cancer.sh
-└── README.md
+└── IGV/
 ```
 
-## Software Requirements
+---
 
-**Operating System**
+### 5. Reference Genome Download
 
-- Ubuntu 20.04+ recommended
+The script downloads the **hg38 HISAT2 genome index**.
 
-**Required Software**
+This index is required for mapping RNA-seq reads to the human genome.
 
-| Software | Purpose |
+---
+
+### 6. RNA-seq Data Download
+
+The pipeline downloads paired-end RNA-seq data:
+
+| Sample Type | Replicate | Accession |
+|---|---|---|
+| Normal breast tissue | Replicate 1 | ERR358485 |
+| Normal breast tissue | Replicate 2 | ERR358486 |
+| MCF7 breast cancer | Replicate 1 | ERR358488 |
+| MCF7 breast cancer | Replicate 2 | ERR358487 |
+
+---
+
+### 7. Quality Control
+
+FastQC checks raw sequencing quality.
+
+It produces HTML reports showing:
+
+- Per-base quality
+- GC content
+- Adapter contamination
+- Sequence duplication
+- Overrepresented sequences
+
+---
+
+### 8. Read Trimming
+
+fastp removes poor-quality bases and sequencing artifacts.
+
+Output files are stored in:
+
+```text
+trimmed/
+```
+
+---
+
+### 9. RNA-seq Alignment
+
+HISAT2 aligns trimmed reads to the human reference genome.
+
+Output SAM files are created first, then converted into BAM files.
+
+---
+
+### 10. BAM Processing
+
+SAMtools converts SAM files into sorted BAM files.
+
+Sorted BAM files are required for:
+
+- gene counting
+- visualization
+- statistics
+- BigWig generation
+
+---
+
+### 11. Alignment Statistics
+
+SAMtools flagstat reports mapping statistics for each sample.
+
+Output files:
+
+```text
+results/normal_rep1_stats.txt
+results/normal_rep2_stats.txt
+results/MCF7_rep1_stats.txt
+results/MCF7_rep2_stats.txt
+```
+
+---
+
+### 12. BigWig File Generation
+
+BigWig files are generated using deepTools.
+
+These files can be loaded into IGV to visualize gene expression patterns across the genome.
+
+---
+
+### 13. Gene Annotation File
+
+The script downloads:
+
+```text
+GENCODE v43 hg38 annotation
+```
+
+This GTF file tells featureCounts where genes are located in the genome.
+
+---
+
+### 14. Gene Quantification
+
+featureCounts counts how many reads map to each gene.
+
+Output:
+
+```text
+FeatureCounts/gene_counts.txt
+```
+
+This count matrix is used by DESeq2.
+
+---
+
+### 15. Differential Expression Analysis
+
+DESeq2 compares:
+
+```text
+MCF7 vs normal
+```
+
+The output includes:
+
+| Column | Meaning |
 |---|---|
-| FastQC | Read quality control |
-| MultiQC | Aggregate QC reports |
-| fastp | Read trimming |
-| HISAT2 | RNA-seq alignment |
-| SAMtools | BAM processing |
-| featureCounts | Gene quantification |
-| R / DESeq2 | Differential expression analysis |
-| BioMart | Gene annotation |
-| IGV | Genome visualization |
+| baseMean | Average normalized expression |
+| log2FoldChange | Expression difference |
+| lfcSE | Standard error |
+| stat | Test statistic |
+| pvalue | Raw p-value |
+| padj | Adjusted p-value |
 
----
+Main output:
 
-## Installation
-
-**Update Ubuntu**
-
-```bash
-sudo apt update
-```
-
-**Clone The repository**
-
-```bash
-git clone https://github.com/mahealamuq/RNA-seq-Data-analysis.git
-cd RNA-seq-Data-analysis
-```
-**Make the script executable:**
-```bash
-chmod +x RNA-seq_Breast_cancer.sh
-```
-**Run the pipeline:**
-```bash
-./RNA-seq_Breast_cancer.sh
-```
-
-
-
-**Install Required Tools**
-
-```bash
-sudo apt install -y \
-fastqc \
-hisat2 \
-samtools \
-subread \
-wget \
-gzip \
-python3-pip
-```
-
-**Install MultiQC**
-
-```bash
-pip3 install multiqc
-```
-
-**Install fastp**
-
-```bash
-sudo apt install fastp
+```text
+results/DESeq2_results.csv
 ```
 
 ---
 
-## Data Download
+### 16. Top 20 Genes
 
-**Create Project Directory**
+The script creates:
 
-```bash
-mkdir -p rnaseq_project/{raw_data,fastqc,trimmed,index,bam,counts,results,genome}
-cd rnaseq_project
+```text
+results/Top20_overexpressed.csv
+results/Top20_underexpressed.csv
 ```
 
-**Download Reference Genome**
+These files contain the most strongly upregulated and downregulated genes.
 
-```bash
-cd genome
+---
 
-wget https://hgdownload.soe.ucsc.edu/goldenPath/hg19/bigZips/hg19.fa.gz
+### 17. BioMart Gene Annotation
 
-gunzip hg19.fa.gz
-```
-
-**Build HISAT2 Index**
-
-```bash
-cd ../index
-
-hisat2-build ../genome/hg19.fa hg19_index
-```
-
-**Download RNA-seq Data**
+BioMart converts Ensembl gene IDs into readable gene names.
 
 Example:
-- Normal sample = ERR358486
-- MCF7 sample = ERR358487
 
-```bash
-cd ../raw_data
+```text
+ENSG00000141510 → TP53
+```
 
-wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR358/ERR358486/ERR358486_1.fastq.gz
-wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR358/ERR358486/ERR358486_2.fastq.gz
+Final annotated output:
 
-wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR358/ERR358487/ERR358487_1.fastq.gz
-wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR358/ERR358487/ERR358487_2.fastq.gz
+```text
+results/top20_overexpressed_genes_annotated.csv
+results/top20_underexpressed_genes_annotated.csv
 ```
 
 ---
 
-## Running the Pipeline
+## Final Output Files
 
-**Step 1: Quality Control**
-
-```bash
-cd ../fastqc
-
-fastqc ../raw_data/*.fastq.gz -o .
-```
-
-Generate combined report:
-
-```bash
-multiqc .
-```
-
----
-
-**Step 2: Read Trimming**
-
-```bash
-cd ../trimmed
-
-fastp \
--i ../raw_data/ERR358486_1.fastq.gz \
--I ../raw_data/ERR358486_2.fastq.gz \
--o normal_R1.trimmed.fastq.gz \
--O normal_R2.trimmed.fastq.gz
-```
-
-```bash
-fastp \
--i ../raw_data/ERR358487_1.fastq.gz \
--I ../raw_data/ERR358487_2.fastq.gz \
--o mcf7_R1.trimmed.fastq.gz \
--O mcf7_R2.trimmed.fastq.gz
-```
-
----
-
-**Step 3: Align Reads with HISAT2**
-
-```bash
-cd ../bam
-
-hisat2 \
--x ../index/hg19_index \
--1 ../trimmed/normal_R1.trimmed.fastq.gz \
--2 ../trimmed/normal_R2.trimmed.fastq.gz \
--S normal.sam
-```
-
-```bash
-hisat2 \
--x ../index/hg19_index \
--1 ../trimmed/mcf7_R1.trimmed.fastq.gz \
--2 ../trimmed/mcf7_R2.trimmed.fastq.gz \
--S mcf7.sam
-```
-
----
-
-**Step 4: Convert SAM to BAM**
-
-```bash
-samtools view -bS normal.sam | samtools sort -o normal.sorted.bam
-
-samtools view -bS mcf7.sam | samtools sort -o mcf7.sorted.bam
-```
-
----
-
-**Step 5: Index BAM Files**
-
-```bash
-samtools index normal.sorted.bam
-
-samtools index mcf7.sorted.bam
-```
-
----
-
-**Step 6: Alignment Statistics**
-
-```bash
-samtools flagstat normal.sorted.bam
-
-samtools flagstat mcf7.sorted.bam
-```
-
----
-
-## Gene Quantification
-
-**Run featureCounts**
-
-```bash
-cd ../counts
-
-featureCounts \
--p \
--a hg19_gencode.v19.annotation.gtf \
--o gene_counts.txt \
-../bam/normal.sorted.bam \
-../bam/mcf7.sorted.bam
-```
-
-**Important Output Files**
-
-| File | Description |
+| Output File | Description |
 |---|---|
-| gene_counts.txt | Gene count matrix |
-| summary file | Mapping statistics |
+| `fastqc/` | FastQC and MultiQC reports |
+| `trimmed/` | Trimmed FASTQ files |
+| `bam/*.bam` | Sorted alignment files |
+| `bam/*.bai` | BAM index files |
+| `bam/*.bw` | BigWig visualization files |
+| `FeatureCounts/gene_counts.txt` | Gene count matrix |
+| `results/DESeq2_results.csv` | Full differential expression results |
+| `results/Top20_overexpressed.csv` | Top 20 upregulated genes in MCF7 |
+| `results/Top20_underexpressed.csv` | Top 20 downregulated genes in MCF7 |
+| `results/top20_overexpressed_genes_annotated.csv` | Annotated overexpressed genes |
+| `results/top20_underexpressed_genes_annotated.csv` | Annotated underexpressed genes |
 
 ---
 
-## Differential Expression Analysis
+## Biological Interpretation
 
-**Run DESeq2 in R**
+Positive `log2FoldChange` means the gene is more highly expressed in MCF7 breast cancer cells.
 
-```r
-library(DESeq2)
+Negative `log2FoldChange` means the gene is more highly expressed in normal breast tissue.
 
-counts <- read.delim(
-  "counts/gene_counts.txt",
-  comment.char = "#",
-  sep = "\t",
-  stringsAsFactors = FALSE,
-  check.names = FALSE
-)
+For example:
 
-head(counts)
+```text
+log2FoldChange = 2
+```
 
-countData <- counts[, c(7,8)]
+means the gene is approximately 4 times higher in MCF7.
 
-rownames(countData) <- counts$Geneid
+```text
+log2FoldChange = -2
+```
 
-countData <- as.matrix(countData)
+means the gene is approximately 4 times lower in MCF7.
 
-mode(countData) <- "integer"
+---
 
-sampleInfo <- data.frame(
-  row.names = colnames(countData),
-  condition = factor(c("Normal", "MCF7"))
-)
+## Next Analysis Steps
 
-dds <- DESeqDataSetFromMatrix(
-  countData = countData,
-  colData = sampleInfo,
-  design = ~ condition
-)
+After this pipeline finishes, the next steps are:
 
-dds <- estimateSizeFactors(dds)
+1. Open `Top20_overexpressed.csv`
+2. Check gene symbols in the annotated file
+3. Search important genes in GeneCards
+4. Run disease enrichment analysis using Enrichr
+5. Create plots such as:
+   - volcano plot
+   - heatmap
+   - bar plot of top genes
+6. Discuss cancer-related genes in the report
 
-norm_counts <- counts(dds, normalized = TRUE)
+---
 
-log2FC <- log2(
-  (norm_counts[,2] + 1) /
-  (norm_counts[,1] + 1)
-)
+## Repository Structure
 
-results_table <- data.frame(
-  Geneid = rownames(norm_counts),
-  Normal = norm_counts[,1],
-  MCF7 = norm_counts[,2],
-  log2FoldChange = log2FC
-)
-
-results_table <- results_table[
-  order(abs(results_table$log2FoldChange), decreasing = TRUE),
-]
-
-write.csv(
-  results_table,
-  "Manual_Log2FC_Results.csv",
-  row.names = FALSE
-)
-
-head(results_table)
-
-# Get genes higher in MCF7
-
-mcf7_up <- subset(results_table, log2FoldChange > 1)
-
-write.csv(
-  mcf7_up,
-  "MCF7_Upregulated_Genes.csv",
-  row.names = FALSE)
-
-#Get genes higher in Control
-
-normal_up <- subset(results_table, log2FoldChange < -1)
-
-write.csv(
-  normal_up,
-  "Normal_Upregulated_Genes.csv",
-  row.names = FALSE)
-
-# Get top 20 genes from control and MCF7
-
-top20_mcf7 <- head(mcf7_up[order(mcf7_up$log2FoldChange, decreasing = TRUE), ], 20)
-
-top20_normal <- head(normal_up[order(normal_up$log2FoldChange), ], 20)
-
-write.csv(top20_mcf7, "Top20_MCF7_Upregulated.csv", row.names = FALSE)
-
-write.csv(top20_normal, "Top20_Normal_Upregulated.csv", row.names = FALSE)
-
-# create new env
-conda create -n biomart_env -c conda-forge -c bioconda bioconductor-biomart
-conda activate biomart_env
-R
-library(biomaRt)
-mcf7 <- read.csv("Top20_MCF7_Upregulated.csv")
-
-# Geneid look like this ENSG00000235123.1, make it without .1
-
-mcf7$Geneid_clean <- sub("\\..*", "", mcf7$Geneid)
-
-genes <- getBM(
-  attributes = c(
-    "ensembl_gene_id",
-    "hgnc_symbol",
-    "external_gene_name"
-  ),
-  filters = "ensembl_gene_id",
-  values = mcf7$Geneid_clean,
-  mart = mart
-)
-
-write.csv(genes, "genes_names.csv", row.names = FALSE)
-
-
- 
-
-
-
+```text
+breast-cancer-rnaseq-analysis/
+│
+├── RNA-seq_Breast_cancer.sh
+├── README.md
+│
+└── breast_cancer_project/
+    ├── index/
+    ├── raw_data/
+    ├── fastqc/
+    ├── trimmed/
+    ├── bam/
+    ├── results/
+    ├── FeatureCounts/
+    ├── R_scripts/
+    └── IGV/
 ```
 
 ---
-
-## Results
-
-Expected outputs include:
-
-- Quality control reports
-- Trimmed FASTQ files
-- Sorted BAM alignment files
-- Gene count matrix
-- Differential expression results
-- Significant gene list
-
-**Example Biological Interpretation**
-
-- Positive log2FoldChange:
-  - higher expression in MCF7 cells
-
-- Negative log2FoldChange:
-  - lower expression in MCF7 cells
-
-- Low adjusted p-value:
-  - statistically significant expression difference
-
----
-
 ## References
 
 **RNA-seq Differential Expression**
@@ -575,29 +506,12 @@ http://www.htslib.org
 
 ---
 
-**Repository Structure**
-
-```text
-rnaseq-analysis-pipeline/
-│
-├── raw_data/
-├── fastqc/
-├── trimmed/
-├── genome/
-├── index/
-├── bam/
-├── counts/
-├── results/
-├── scripts/
-│
-├── README.md
-└── rnaseq_pipeline.sh
-```
-
-**Author**
+## Author
 
 Mahe Alam
 
-**License**
+---
+
+## License
 
 MIT License
