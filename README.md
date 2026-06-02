@@ -192,6 +192,20 @@ sudo apt update
 
 **Clone The repository**
 
+```bash
+git clone https://github.com/mahealamuq/RNA-seq-Data-analysis.git
+cd RNA-seq-Data-analysis
+```
+**Make the script executable:**
+```bash
+chmod +x RNA-seq_Breast_cancer.sh
+```
+**Run the pipeline:**
+```bash
+./RNA-seq_Breast_cancer.sh
+```
+
+
 
 **Install Required Tools**
 
