@@ -83,6 +83,10 @@ RNA-seq FASTQ Files
           ▼
  Gene Symbols &
  Functional Annotation
+          |
+          ▼
+ IGV for visually check overexpress
+ and underexpress gene   
 ```
 # Breast Cancer RNA-seq Analysis Pipeline
 
