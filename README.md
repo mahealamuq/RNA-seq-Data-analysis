@@ -155,6 +155,8 @@ RNA-seq FASTQ Files
 ---
 ## Directory Structure
 
+
+```text
 breast_cancer_project/
 │
 ├── index/
@@ -169,6 +171,7 @@ breast_cancer_project/
 │
 ├── RNA-seq_Breast_cancer.sh
 └── README.md
+```
 
 ## Software Requirements
 
