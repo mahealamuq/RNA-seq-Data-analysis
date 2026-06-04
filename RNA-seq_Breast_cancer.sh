@@ -131,7 +131,7 @@ echo "Creating project directories..."
 
 mkdir -p RNA-seq_analysis_project/{index,raw_data,fastqc,trimmed,bam,results,FeatureCounts,R_scripts,IGV}
 
-cd breast_cancer_project
+cd RNA-seq_analysis_project
 
 # =========================================================
 # DOWNLOAD HUMAN GENOME
@@ -315,7 +315,7 @@ bamCoverage -b bam/MCF7_rep2_sorted.bam -o bam/MCF7_rep2.bw
 
 echo "Downloading GTF annotation..."
 
-#cd FeatureCounts
+cd FeatureCounts
 
 wget https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_43/gencode.v43.annotation.gtf.gz
 
@@ -334,7 +334,7 @@ featureCounts \
 -T 4 \
 -p \
 -a FeatureCounts/hg38_gencode.v43.annotation.gtf \
--o counts/gene_counts.txt \
+-o FeatureCounts/gene_counts.txt \
 bam/normal_rep1_sorted.bam \
 bam/normal_rep2_sorted.bam \
 bam/MCF7_rep1_sorted.bam \
@@ -374,5 +374,5 @@ echo "================================================="
 
 echo "Running BioMart annotation..."
 
-Rscript R_scripts/biomart_annotation.R
+Rscript R_scripts/R_scripts/rnaseq_downstream_analysis.R
 
