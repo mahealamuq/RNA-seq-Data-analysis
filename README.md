@@ -695,6 +695,24 @@ Genes with negative log2 fold change are more highly expressed in normal breast 
 
 Disease enrichment analysis helps identify whether these genes are associated with breast cancer or other cancer-related diseases.
 
+
+Neoplasms (Breast Cancer).
+
+This result indicates that many genes showing reduced expression in MCF7 breast cancer cells have previously been associated with breast cancer biology. The significant enrichment suggests that these genes may represent normal breast tissue functions that are suppressed or dysregulated during cancer development.
+
+For example, genes involved in cell adhesion, tissue organization, extracellular matrix regulation, and cellular signalling were found to be significantly downregulated in MCF7 cells compared with normal breast tissue.
+
+The strong enrichment of the Mammary Neoplasms disease term supports the biological relevance of the differential expression analysis and confirms that the identified genes are associated with breast cancer-related molecular pathways.
+
+Top Disease Term
+
+Disease	Adjusted P-value
+Mammary Neoplasms	7.75 × 10⁻⁹
+
+The extremely low adjusted p-value indicates a highly significant association between the underexpressed gene set and genes previously linked to breast cancer.
+
+Now check in IGV:
+
 ---
 ## References
 
