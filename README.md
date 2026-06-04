@@ -758,6 +758,8 @@ locations
 | TNC | 9 | 115,019,575 | 115,118,257 | - |
 
 ---
+<img width="2109" height="1770" alt="image" src="https://github.com/user-attachments/assets/68c9b726-7f7f-4c83-91a1-11b3494136ee" />
+
 ## References
 
 **RNA-seq Differential Expression**
