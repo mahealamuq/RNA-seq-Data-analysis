@@ -374,5 +374,5 @@ echo "================================================="
 
 echo "Running BioMart annotation..."
 
-Rscript R_scripts/R_scripts/rnaseq_downstream_analysis.R
+Rscript R_scripts/rnaseq_downstream_analysis.R
 
