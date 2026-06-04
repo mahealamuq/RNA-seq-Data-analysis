@@ -8,7 +8,7 @@
 set -e
 
 echo "================================================="
-echo " Breast Cancer RNA-seq & ChIP-seq Pipeline "
+echo " Breast Cancer RNA-seq Analysis Pipeline "
 echo "================================================="
 
 # =========================================================
