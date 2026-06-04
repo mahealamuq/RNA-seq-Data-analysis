@@ -50,41 +50,26 @@ to identify significantly overexpressed and underexpressed genes.
 ## Workflow Overview
 
 **Pipeline Workflow**
-
-```text
-```text
-RNA-seq FASTQ Files
-          │
-          ▼
-     FastQC
-          │
-          ▼
-       fastp
-          │
-          ▼
-      HISAT2
-          │
-          ▼
-   Sorted BAM Files
-          │
-          ▼
-   featureCounts
-          │
-          ▼
-       DESeq2
-          │
-          ▼
- Differentially
- Expressed Genes
-          │
-          ▼
-      BioMart
-          │
-          ▼
- Gene Symbols &
- Functional Annotation
-          |
-          ▼
+Download FASTQ
+      ↓
+FastQC
+      ↓
+fastp
+      ↓
+HISAT2
+      ↓
+SAMtools
+      ↓
+featureCounts
+      ↓
+DESeq2
+      ↓
+Top 100 genes
+      ↓
+Gene annotation
+      ↓
+Disease enrichment (Enrichr)
+      ↓
  IGV for visually check overexpress
  and underexpress gene   
 ```
