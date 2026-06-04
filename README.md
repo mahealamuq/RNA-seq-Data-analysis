@@ -147,6 +147,11 @@ Run the script:
 ```bash
 ./RNA-seq_Breast_cancer.sh
 ```
+Run the downstream R analysis separately if needed:
+
+```bash
+Rscript R_scripts/rnaseq_downstream_analysis.R
+```
 
 ## Explanation of Each Step
 
@@ -653,8 +658,6 @@ Underexpressed_Jensen_Significant_Diseases.csv
 | `results/Significant_genes.csv` | Significant genes with padj < 0.05 |
 | `results/Top100_overexpressed.csv` | Top 100 genes upregulated in MCF7 |
 | `results/Top100_underexpressed.csv` | Top 100 genes downregulated in MCF7 |
-| `results/Top20_overexpressed.csv` | Top 20 genes upregulated in MCF7 |
-| `results/Top20_underexpressed.csv` | Top 20 genes downregulated in MCF7 |
 | `results/*Disease*.csv` | Disease enrichment results |
 
 ---
