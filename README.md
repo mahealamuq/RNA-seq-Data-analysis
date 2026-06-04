@@ -712,6 +712,50 @@ Mammary Neoplasms	7.75 × 10⁻⁹
 The extremely low adjusted p-value indicates a highly significant association between the underexpressed gene set and genes previously linked to breast cancer.
 
 Now check in IGV:
+```r
+The genomic locations of these genes were retrieved using the biomaRt package.
+
+library(biomaRt)
+
+genes <- c(
+  "ADH1B",
+  "TNC",
+  "LPL",
+  "PTN",
+  "ETS1",
+  "CDH5"
+)
+
+mart <- useEnsembl(
+    biomart = "genes",
+    dataset = "hsapiens_gene_ensembl"
+)
+
+locations <- getBM(
+    attributes = c(
+        "hgnc_symbol",
+        "chromosome_name",
+        "start_position",
+        "end_position",
+        "strand"
+    ),
+    filters = "hgnc_symbol",
+    values = genes,
+    mart = mart
+)
+
+locations
+```
+**Genomic Locations of Mammary Neoplasm-Associated Genes**
+
+| Gene Symbol | Chromosome | Start Position | End Position | Strand |
+|------------|------------|---------------:|-------------:|:------:|
+| ADH1B | 4 | 99,304,971 | 99,321,659 | - |
+| CDH5 | 16 | 66,366,636 | 66,404,784 | + |
+| ETS1 | 11 | 128,458,761 | 128,587,606 | - |
+| LPL | 8 | 19,901,717 | 19,967,267 | + |
+| PTN | 7 | 137,227,341 | 137,344,358 | - |
+| TNC | 9 | 115,019,575 | 115,118,257 | - |
 
 ---
 ## References
