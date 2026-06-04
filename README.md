@@ -50,25 +50,27 @@ to identify significantly overexpressed and underexpressed genes.
 ## Workflow Overview
 
 **Pipeline Workflow**
-Download FASTQ
-      ↓
-FastQC
-      ↓
-fastp
-      ↓
-HISAT2
-      ↓
-SAMtools
-      ↓
-featureCounts
-      ↓
-DESeq2
-      ↓
-Top 100 genes
-      ↓
+
+```text
+FASTQ files
+   ↓
+FastQC quality control
+   ↓
+fastp read trimming
+   ↓
+HISAT2 alignment to hg38 genome
+   ↓
+SAMtools BAM processing
+   ↓
+BigWig file generation
+   ↓
+featureCounts gene quantification
+   ↓
+DESeq2 differential expression analysis
+   ↓
 Gene annotation
-      ↓
-Disease enrichment (Enrichr)
+   ↓
+Enrichr disease enrichment analysis
       ↓
  IGV for visually check overexpress
  and underexpress gene   
@@ -146,42 +148,8 @@ Run the script:
 ./RNA-seq_Breast_cancer.sh
 ```
 
----
-
 ## Explanation of Each Step
-# Breast Cancer RNA-seq Analysis Pipeline
 
-This project performs RNA-seq analysis to identify differentially expressed genes between **MCF7 breast cancer cells** and **normal breast tissue**.
-
-The pipeline includes raw data download, quality control, read trimming, genome alignment, gene counting, differential expression analysis, gene annotation, and disease enrichment analysis.
-
----
-
-## Workflow Overview
-
-```text
-FASTQ files
-   ↓
-FastQC quality control
-   ↓
-fastp read trimming
-   ↓
-HISAT2 alignment to hg38 genome
-   ↓
-SAMtools BAM processing
-   ↓
-BigWig file generation
-   ↓
-featureCounts gene quantification
-   ↓
-DESeq2 differential expression analysis
-   ↓
-Gene annotation
-   ↓
-Enrichr disease enrichment analysis
-```
-
----
 
 ## Step 1: System Update
 
