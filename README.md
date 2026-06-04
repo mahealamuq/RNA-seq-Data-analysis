@@ -758,7 +758,22 @@ locations
 | TNC | 9 | 115,019,575 | 115,118,257 | - |
 
 ---
-<img width="2109" height="1770" alt="image" src="https://github.com/user-attachments/assets/68c9b726-7f7f-4c83-91a1-11b3494136ee" />
+**IGV Visualization of ADH1B**
+
+The ADH1B gene was visualized in IGV using BigWig coverage tracks generated from the aligned RNA-seq data.
+
+<img width="2109" height="1770" alt="image" src="https://github.com/user-attachments/assets/93f074de-bcf5-4cf2-87e1-d6039851d20c" />
+
+
+**Interpretation**
+
+The MCF7 breast cancer samples (MCF7_rep1 and MCF7_rep2) show little to no RNA-seq coverage across the ADH1B locus, indicating very low expression of the gene.
+
+In contrast, the normal breast tissue samples (normal_rep1 and normal_rep2) display strong read coverage across the ADH1B gene region, demonstrating active transcription.
+
+This pattern is consistent across both biological replicates and supports the DESeq2 differential expression analysis, which identified ADH1B as significantly underexpressed in MCF7 cells compared with normal breast tissue.
+
+The reduction of ADH1B expression may reflect alterations in metabolic pathways associated with breast cancer progression.
 
 ## References
 
